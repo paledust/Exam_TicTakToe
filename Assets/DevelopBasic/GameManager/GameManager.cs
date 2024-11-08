@@ -122,7 +122,7 @@ public class GameManager : Singleton<GameManager>
         Application.Quit();
     }
     IEnumerator RestartLevel(string level){
-        yield return FadeInBlackScreen(3f);
+        yield return FadeInBlackScreen(0.5f);
         IsSwitchingScene = true;
         EventHandler.Call_BeforeUnloadScene();
 
