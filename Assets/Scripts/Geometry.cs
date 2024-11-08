@@ -26,4 +26,7 @@ public static class Geometry
     public static int IndexFromGrid(int col, int row){
         return col*3+row;
     }
+    public static Vector2Int GridFromIndex(int index){
+        return new Vector2Int(index/3, index%3);
+    }
 }

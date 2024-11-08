@@ -44,10 +44,10 @@ public class TTT_Player : TTT_Pawn
             EventHandler.Call_OnSelectGrid(selectedGrid);
         }
     }
-    public override void BeginPlay(){
+    public override void BeginPlay(TicTacToeManager ttt_manager){
         this.enabled = true;
     }
-    public override void FinishPlay(){
+    public override void FinishPlay(TicTacToeManager ttt_manager){
         this.enabled = false;
         highLighter.SetActive(false);
     }

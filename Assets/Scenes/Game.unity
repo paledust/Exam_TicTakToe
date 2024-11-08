@@ -201,7 +201,7 @@ MonoBehaviour:
   isCross: 1
   boardTrans: {fileID: 1063944807}
   crossPlayer: {fileID: 2066317292}
-  donutPlayer: {fileID: 2066317292}
+  donutPlayer: {fileID: 231856389}
   crossPrefab: {fileID: 8701707308200315820, guid: 7a2a7021d1571144f8c54452588739a4,
     type: 3}
   donutPrefab: {fileID: 3567450323079759236, guid: 197ed91ef1045594da240f4321749558,

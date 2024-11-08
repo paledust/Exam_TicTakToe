@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class TTT_Pawn : MonoBehaviour
 {
-    public virtual void BeginPlay(){}
-    public virtual void FinishPlay(){}
+    public virtual void BeginPlay(TicTacToeManager ttt_manager){}
+    public virtual void FinishPlay(TicTacToeManager ttt_manager){}
 }
