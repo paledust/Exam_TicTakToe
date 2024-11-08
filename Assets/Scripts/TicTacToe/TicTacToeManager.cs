@@ -22,9 +22,9 @@ public class TicTacToeManager : MonoBehaviour
     public char[] m_layoutInfo{get; private set;} = new char[9]{'-','-','-',
                                                                 '-','-','-',
                                                                 '-','-','-'};
-    [SerializeField, ShowOnly] private TTT_Pawn currentPlayer;
-    [SerializeField, ShowOnly] private TTT_Pawn crossPlayer;
-    [SerializeField, ShowOnly] private TTT_Pawn noughtPlayer;
+    private TTT_Pawn currentPlayer;
+    private TTT_Pawn crossPlayer;
+    private TTT_Pawn noughtPlayer;
 
     public const char CROSS_CHAR = 'X';
     public const char NOUGHT_CHAR = 'O';
