@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class TicTacToeManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject crossPrefab;
+    [SerializeField] private GameObject donutPrefab;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private char[] layoutInfo = new char[9]{'-','-','-',
+                                            '-','-','-',
+                                            '-','-','-'};
+
+    private const char crossChar = 'X';
+    private const char donutChar = 'O';
+
 }

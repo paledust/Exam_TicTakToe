@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Service{
+    public static readonly LayerMask INTERACT_LAYER = 1<<LayerMask.NameToLayer("Interactable");
 #region HelperFunction
     /// <summary>
     /// Return a list of all active and inactive objects of T type in loaded scenes.
