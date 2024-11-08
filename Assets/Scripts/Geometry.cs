@@ -20,4 +20,10 @@ public static class Geometry
 
         return new Vector2Int(col, row);
     }
+    public static int IndexFromGrid(Vector2Int gridPoint){
+        return IndexFromGrid(gridPoint.x, gridPoint.y);
+    }
+    public static int IndexFromGrid(int col, int row){
+        return col*3+row;
+    }
 }

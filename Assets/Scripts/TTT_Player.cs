@@ -18,9 +18,6 @@ public class TTT_Player : TTT_Pawn
         highLighter.transform.localRotation =  Quaternion.identity;
         highLighter.SetActive(false);
     }
-    void OnDisable(){
-        highLighter.SetActive(false);
-    }
     void Update(){
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
@@ -42,9 +39,16 @@ public class TTT_Player : TTT_Pawn
             selectedGrid = new Vector2Int(-1, -1);
         }
     }
-    void OnClick(InputValue input){
+    void OnSelect(InputValue input){
         if(input.isPressed && Geometry.ValidPoint(selectedGrid)){
-            
+            EventHandler.Call_OnSelectGrid(selectedGrid);
         }
+    }
+    public override void BeginPlay(){
+        this.enabled = true;
+    }
+    public override void FinishPlay(){
+        this.enabled = false;
+        highLighter.SetActive(false);
     }
 }
