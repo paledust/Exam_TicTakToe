@@ -5,16 +5,17 @@ using UnityEngine.InputSystem;
 
 public class TTT_Player : TTT_Pawn
 {
-    [SerializeField] private Transform boardTransform;
     [SerializeField] private GameObject highLighterPrefab;
+    [SerializeField] private PlayerInput playerInput;
 
+    private Transform boardTransform;
     private GameObject highLighter;
     private Vector2Int selectedGrid;
-
     void Start(){
         highLighter = Instantiate(highLighterPrefab, boardTransform);
 
-        highLighter.transform.localPosition =  Geometry.PointFromGrid(new Vector2Int(0,0));
+        selectedGrid = new Vector2Int(-1, -1);
+        highLighter.transform.localPosition =  Geometry.PointFromGrid(new Vector2Int(-1,-1));
         highLighter.transform.localRotation =  Quaternion.identity;
         highLighter.SetActive(false);
     }
@@ -39,12 +40,15 @@ public class TTT_Player : TTT_Pawn
             selectedGrid = new Vector2Int(-1, -1);
         }
     }
+    public void AssignBoard(Transform board)=>boardTransform = board;
     public override void BeginPlay(TicTacToeManager ttt_manager){
         this.enabled = true;
+        playerInput.enabled = true;
     }
     public override void FinishPlay(TicTacToeManager ttt_manager){
         this.enabled = false;
         highLighter.SetActive(false);
+        playerInput.enabled = false;
     }
 #region Input
     void OnSelect(InputValue input){

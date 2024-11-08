@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef60804274906a342b8f33b2ff01f66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuRaycaster: {fileID: 484217938}
 --- !u!1 &484217936
 GameObject:
   m_ObjectHideFlags: 0

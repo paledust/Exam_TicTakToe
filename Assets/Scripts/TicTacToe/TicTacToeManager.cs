@@ -5,11 +5,15 @@ using UnityEngine;
 public class TicTacToeManager : MonoBehaviour
 {
     public enum END_GAME_CONDITION{Cross, Nought, Tie}
+    public enum GAME_MODE{VS_AI, VS_HUMAN}
+
     [SerializeField, ShowOnly] private bool isCross = true;
     [SerializeField] private Transform boardTrans;
+
 [Header("Player")]
-    [SerializeField] private TTT_Pawn crossPlayer;
-    [SerializeField] private TTT_Pawn noughtPlayer;
+    [SerializeField] private GameObject ai_prefab;
+    [SerializeField] private GameObject player_prefab;
+
 [Header("Prefab")]
     [SerializeField] private GameObject crossPrefab;
     [SerializeField] private GameObject noughtPrefab;
@@ -18,24 +22,43 @@ public class TicTacToeManager : MonoBehaviour
     public char[] m_layoutInfo{get; private set;} = new char[9]{'-','-','-',
                                                                 '-','-','-',
                                                                 '-','-','-'};
+    [SerializeField, ShowOnly] private TTT_Pawn currentPlayer;
+    [SerializeField, ShowOnly] private TTT_Pawn crossPlayer;
+    [SerializeField, ShowOnly] private TTT_Pawn noughtPlayer;
 
     public const char CROSS_CHAR = 'X';
     public const char NOUGHT_CHAR = 'O';
     public const char EMPTY_CHAR = '-';
 
-    private TTT_Pawn currentPlayer;
-
     public bool m_isCross{get{return isCross;}}
+    public static GAME_MODE m_GameMode = GAME_MODE.VS_AI;
 
     void Awake(){
-        bool SwapOrder = (Random.Range(0, 1f) - 0.5f)>0;
-        if(SwapOrder){
-            var tempPlayer = noughtPlayer;
-            noughtPlayer = crossPlayer;
-            crossPlayer = tempPlayer;
-        }
-        currentPlayer = isCross?crossPlayer:noughtPlayer;
         EventHandler.E_OnSelectGrid += SelectGridHandler;
+
+        TTT_Pawn player_one, player_two;
+        switch(m_GameMode){
+            case GAME_MODE.VS_HUMAN:
+                player_one = Instantiate(player_prefab).GetComponent<TTT_Player>();
+                player_two = Instantiate(player_prefab).GetComponent<TTT_Player>();
+                (player_one as TTT_Player).AssignBoard(boardTrans);
+                (player_two as TTT_Player).AssignBoard(boardTrans);
+
+                break;
+            default:
+                player_one = Instantiate(player_prefab).GetComponent<TTT_Player>();
+                player_two = Instantiate(ai_prefab).GetComponent<TTT_AI>();
+                (player_one as TTT_Player).AssignBoard(boardTrans);
+
+                break;
+        }
+
+        bool firstIsCross = (Random.Range(0, 1f) - 0.5f)>0;
+        crossPlayer = firstIsCross?player_one:player_two;
+        noughtPlayer = firstIsCross?player_two:player_one;
+
+        isCross = true;
+        currentPlayer = crossPlayer;
     }
     void OnDestroy(){
         EventHandler.E_OnSelectGrid -= SelectGridHandler;
