@@ -12,7 +12,7 @@ public static class Geometry
         return new Vector2Int(col, row);
     }
     public static bool ValidPoint(Vector2Int gridPoint){
-        return (gridPoint.x >=0 && gridPoint.x <= 2) && (gridPoint.y >= 0 && gridPoint.y <= 2);
+        return gridPoint.x >=0 && gridPoint.x <= 2 && gridPoint.y >= 0 && gridPoint.y <= 2;
     }
     public static Vector2Int GridFromPoint(Vector3 point){
         int col = Mathf.FloorToInt(1.5f + point.x/UNIT_LENGTH);
