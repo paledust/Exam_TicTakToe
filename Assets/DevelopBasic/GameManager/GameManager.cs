@@ -137,6 +137,7 @@ public class GameManager : Singleton<GameManager>
         IsSwitchingScene = false;
     }
     IEnumerator SwitchSceneCoroutine(string from, string to, bool autosaveAfterTransition){
+        BlackScreenCanvasGroup.blocksRaycasts = true;
         IsSwitchingScene = true;
         if(from != string.Empty){
             lastScene = from;
@@ -157,6 +158,7 @@ public class GameManager : Singleton<GameManager>
         yield return FadeOutBlackScreen(transitionDuration);
 
         IsSwitchingScene = false;
+        BlackScreenCanvasGroup.blocksRaycasts = false;
     }
     public IEnumerator FadeInBlackScreen(float fadeDuration){
         float initAlpha = BlackScreenCanvasGroup.alpha;
