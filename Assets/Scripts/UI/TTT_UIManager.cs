@@ -26,6 +26,8 @@ public class TTT_UIManager : MonoBehaviour
         EventHandler.E_OnAITurn -= AITurnHandler;
         EventHandler.E_OnStepChange -= StepChangeHandler;
     }
+
+#region Button Event
     public void BEvent_Restart(){
         AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         GameManager.Instance.RestartLevel();
@@ -38,6 +40,8 @@ public class TTT_UIManager : MonoBehaviour
         AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         EventHandler.Call_OnCancelStep();
     }
+#endregion
+
 #region EventHandler
     void TTT_GameEndHandler(TicTacToeManager.END_GAME_CONDITION endgame_condition){
         buttonGroup.interactable = false;
@@ -65,6 +69,7 @@ public class TTT_UIManager : MonoBehaviour
             cancelButton.interactable = true;
     }
 #endregion
+
     IEnumerator coroutineFadeCanvasGroup(CanvasGroup targetGroup, float targetAlpha, float duration, bool turnOnInteractive){
         yield return new WaitForSeconds(0.5f);
         float initAlpha = targetGroup.alpha;
