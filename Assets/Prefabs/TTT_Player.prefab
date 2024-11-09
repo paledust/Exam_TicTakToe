@@ -76,6 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b075f93edede31b49bc60ae52bd332b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highLighterPrefab: {fileID: 5995840426438975609, guid: 67f5640a3f24c55468ff84871aaaca4b,
+  crossHighlighter: {fileID: 721689528298924934, guid: ab9c6a65a1eebe44abd615a9de3bbde7,
+    type: 3}
+  noughtHighlighter: {fileID: 1994712437541822310, guid: b1b7ba876c1cf7f4f83aa34ca1908581,
     type: 3}
   playerInput: {fileID: 6009425390588824426}

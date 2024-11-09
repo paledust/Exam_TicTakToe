@@ -8,7 +8,7 @@ public class TTT_AI : TTT_Pawn
     public async override void BeginPlay(TicTacToeManager ttt_manager)
     {
         EventHandler.Call_OnAITurn(true);
-        await Task.Delay(500);
+        await Task.Delay(800);
     //计算接下来要走哪一步
         char[] tempLayout = new char[9];
         System.Array.Copy(ttt_manager.m_layoutInfo, tempLayout, 9);

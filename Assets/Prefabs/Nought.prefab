@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6941531858548660690}
   - component: {fileID: 356566784650757401}
   m_Layer: 0
-  m_Name: Donut Renderer
+  m_Name: Nought Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

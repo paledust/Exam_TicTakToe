@@ -166,8 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5e02d58e8f28047865999377fef8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCross: 1
   boardTrans: {fileID: 1063944807}
+  backgroundSprite: {fileID: 1398100195}
+  crossColor: {r: 0.9019608, g: 0.49810275, b: 0.36078435, a: 1}
+  noughtColor: {r: 0.9, g: 0.77160835, b: 0.35999995, a: 1}
   ai_prefab: {fileID: 7091149443652799854, guid: ee57e66f5a439d245b55272b8d8790f2,
     type: 3}
   player_prefab: {fileID: 1396161597099356036, guid: 328b7794d95916547b81ef6f133a3c39,
@@ -351,7 +353,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

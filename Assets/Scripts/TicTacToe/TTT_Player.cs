@@ -5,27 +5,23 @@ using UnityEngine.InputSystem;
 
 public class TTT_Player : TTT_Pawn
 {
-    [SerializeField] private GameObject highLighterPrefab;
+    [SerializeField] private GameObject crossHighlighter;
+    [SerializeField] private GameObject noughtHighlighter;
     [SerializeField] private PlayerInput playerInput;
 
     private Transform boardTransform;
     private GameObject highLighter;
     private Vector2Int selectedGrid;
-    void Start(){
-        highLighter = Instantiate(highLighterPrefab, boardTransform);
 
-        selectedGrid = new Vector2Int(-1, -1);
-        highLighter.transform.localPosition =  Geometry.PointFromGrid(new Vector2Int(-1,-1));
-        highLighter.transform.localRotation =  Quaternion.identity;
-        highLighter.SetActive(false);
-    }
+    private bool isInitialized = false;
+
     void Update(){
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Service.INTERACT_LAYER)){
             Vector2Int gridPoint = Geometry.GridFromPoint(boardTransform.InverseTransformPoint(hit.point));
             if(Geometry.ValidPoint(gridPoint)){
-                highLighter.SetActive(true);
+                highLighter.gameObject.SetActive(true);
                 highLighter.transform.localPosition = Geometry.PointFromGrid(gridPoint)+Vector3.up*0.4f;
                 
                 selectedGrid = gridPoint;
@@ -44,6 +40,16 @@ public class TTT_Player : TTT_Pawn
         this.enabled = true;
         playerInput.enabled = true;
         boardTransform = ttt_manager.m_boardTrans;
+
+        if(!isInitialized){
+            isInitialized = true;
+            
+            selectedGrid = new Vector2Int(-1, -1);
+            highLighter = Instantiate(ttt_manager.m_isCross?crossHighlighter:noughtHighlighter, boardTransform);
+            highLighter.transform.localPosition =  Geometry.PointFromGrid(new Vector2Int(-1,-1));
+            highLighter.transform.localRotation =  Quaternion.identity;
+            highLighter.SetActive(false);
+        }
     }
     public override void FinishPlay(TicTacToeManager ttt_manager){
         this.enabled = false;

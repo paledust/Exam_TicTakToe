@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class TicTacToeManager : MonoBehaviour
 {
     public enum END_GAME_CONDITION{Cross, Nought, Tie}
     public enum GAME_MODE{VS_AI, VS_HUMAN}
-
+[Header("Visual")]
     [SerializeField] private Transform boardTrans;
+    [SerializeField] private SpriteRenderer backgroundSprite;
+    [SerializeField] private Color crossColor;
+    [SerializeField] private Color noughtColor;
 
 [Header("Player")]
     [SerializeField] private GameObject ai_prefab;
@@ -26,12 +30,14 @@ public class TicTacToeManager : MonoBehaviour
     private TTT_Pawn crossPlayer;
     private TTT_Pawn noughtPlayer;
     private Stack<TTT_Move> stackMoves;
+    private CoroutineExcuter backgroundChanger;
 
     public const char CROSS_CHAR = 'X';
     public const char NOUGHT_CHAR = 'O';
     public const char EMPTY_CHAR = '-';
 
     public bool m_isCross{get{return stackMoves==null || (stackMoves.Count%2 == 0);}}
+
     public Transform m_boardTrans{get{return boardTrans;}}
 
     public static GAME_MODE m_GameMode = GAME_MODE.VS_AI;
@@ -59,6 +65,7 @@ public class TicTacToeManager : MonoBehaviour
         EventHandler.E_OnCancelStep += CancelStepHandler;
 
         stackMoves = new Stack<TTT_Move>();
+        backgroundChanger = new CoroutineExcuter(this);
     //生成玩家
         TTT_Pawn player_one, player_two;
         switch(m_GameMode){
@@ -74,7 +81,7 @@ public class TicTacToeManager : MonoBehaviour
                 break;
         }
     //决定先手
-        bool firstIsCross = (Random.Range(0, 1f) - 0.5f)>0;
+        bool firstIsCross = (Random.value - 0.5f)>0;
         crossPlayer = firstIsCross?player_one:player_two;
         noughtPlayer = firstIsCross?player_two:player_one;
 
@@ -87,6 +94,7 @@ public class TicTacToeManager : MonoBehaviour
     void Start(){
         EventHandler.Call_OnStepChange(stackMoves.Count);
         currentPlayer.BeginPlay(this);
+        backgroundChanger.Excute(CommonCoroutine.coroutineFadeSpriteColor(backgroundSprite, crossColor, 0.25f));
     }
 #region Event Handler
     void CancelStepHandler(){
@@ -117,7 +125,7 @@ public class TicTacToeManager : MonoBehaviour
                 EventHandler.Call_OnTTTGameEnd(m_isCross?END_GAME_CONDITION.Cross:END_GAME_CONDITION.Nought);
                 return;
             }
-            
+        //检查棋盘是否只剩一个空位
             if(stackMoves.Count >= 8){
                 Debug.Log("棋盘已满!");
                 EventHandler.Call_OnTTTGameEnd(END_GAME_CONDITION.Tie);
@@ -128,12 +136,12 @@ public class TicTacToeManager : MonoBehaviour
             EventHandler.Call_OnStepChange(stackMoves.Count);
 
             currentPlayer = m_isCross?crossPlayer:noughtPlayer;
+            backgroundChanger.Excute(CommonCoroutine.coroutineFadeSpriteColor(backgroundSprite, m_isCross?crossColor:noughtColor, 0.1f));
             currentPlayer.BeginPlay(this);
         }
     }
 #endregion
 
-//检查棋盘是否已满
     void RemovePiece(Vector2Int gridPoint){
         int index = Geometry.IndexFromGrid(gridPoint);
         Destroy(pieces[index].gameObject);
