@@ -9,8 +9,9 @@ public class TTT_Player : TTT_Pawn
     [SerializeField] private GameObject noughtHighlighter;
     [SerializeField] private PlayerInput playerInput;
 
-    private Transform boardTransform;
+    private TicTacToeManager ttt_manager;
     private GameObject highLighter;
+    private Transform boardTransform;
     private Vector2Int selectedGrid;
 
     private bool isInitialized = false;
@@ -20,7 +21,7 @@ public class TTT_Player : TTT_Pawn
 
         if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Service.INTERACT_LAYER)){
             Vector2Int gridPoint = Geometry.GridFromPoint(boardTransform.InverseTransformPoint(hit.point));
-            if(Geometry.ValidPoint(gridPoint)){
+            if(Geometry.ValidPoint(gridPoint) && !ttt_manager.HasPiece(gridPoint)){
                 highLighter.gameObject.SetActive(true);
                 highLighter.transform.localPosition = Geometry.PointFromGrid(gridPoint)+Vector3.up*0.4f;
                 
@@ -35,9 +36,12 @@ public class TTT_Player : TTT_Pawn
             highLighter.SetActive(false);
             selectedGrid = new Vector2Int(-1, -1);
         }
+
     }
     public override void BeginPlay(TicTacToeManager ttt_manager){
         this.enabled = true;
+        this.ttt_manager = ttt_manager;
+
         playerInput.enabled = true;
         boardTransform = ttt_manager.m_boardTrans;
 

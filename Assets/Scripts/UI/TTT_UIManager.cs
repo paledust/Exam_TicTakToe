@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SimpleAudioSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,43 +13,32 @@ public class TTT_UIManager : MonoBehaviour
 [Header("End Screen")]
     [SerializeField] private CanvasGroup endGroup;
     [SerializeField] private TextMeshProUGUI endText;
+[Header("Audio")]
+    [SerializeField] private AudioSource ui_audio;
+    [SerializeField] private string ui_clip;
     void Awake(){
-        EventHandler.E_AfterLoadScene += AfterLoadSceneHandler;
-        EventHandler.E_BeforeUnloadScene += BeforeLoadSceneHandler;
         EventHandler.E_OnTTTGameEnd += TTT_GameEndHandler;
         EventHandler.E_OnAITurn += AITurnHandler;
         EventHandler.E_OnStepChange += StepChangeHandler;
     }
     void OnDestroy(){
-        EventHandler.E_AfterLoadScene -= AfterLoadSceneHandler;
-        EventHandler.E_BeforeUnloadScene -= BeforeLoadSceneHandler;
         EventHandler.E_OnTTTGameEnd -= TTT_GameEndHandler;
         EventHandler.E_OnAITurn -= AITurnHandler;
         EventHandler.E_OnStepChange -= StepChangeHandler;
     }
     public void BEvent_Restart(){
+        AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         GameManager.Instance.RestartLevel();
     }
     public void BEvent_BackToMenu(){
+        AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         GameManager.Instance.SwitchingScene("Menu");
     }
     public void BEvent_Cancel(){
+        AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         EventHandler.Call_OnCancelStep();
     }
 #region EventHandler
-    void BeforeLoadSceneHandler(){
-        buttonGroup.interactable = false;
-    }
-    void AfterLoadSceneHandler(){
-        if(GameManager.Instance.currentScene == "Menu"){
-            buttonGroup.interactable = false;
-            buttonGroup.alpha = 0;
-        }
-        else{
-            buttonGroup.interactable = true;
-            buttonGroup.alpha = 1;
-        }
-    }
     void TTT_GameEndHandler(TicTacToeManager.END_GAME_CONDITION endgame_condition){
         buttonGroup.interactable = false;
         buttonGroup.alpha = 0;
