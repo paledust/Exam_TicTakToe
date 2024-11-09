@@ -18,6 +18,12 @@ public static class EventHandler
 #endregion
 
 #region TTT Event
+    public static event Action<bool> E_OnAITurn;
+    public static void Call_OnAITurn(bool isTurnBegin)=>E_OnAITurn?.Invoke(isTurnBegin);
+    public static event Action<int> E_OnStepChange;
+    public static void Call_OnStepChange(int stepCount)=>E_OnStepChange?.Invoke(stepCount);
+    public static event Action E_OnCancelStep;
+    public static void Call_OnCancelStep()=>E_OnCancelStep?.Invoke();
     public static event Action<Vector2Int> E_OnSelectGrid;
     public static void Call_OnSelectGrid(Vector2Int gridPoint)=>E_OnSelectGrid?.Invoke(gridPoint);
     public static event Action<TicTacToeManager.END_GAME_CONDITION> E_OnTTTGameEnd;

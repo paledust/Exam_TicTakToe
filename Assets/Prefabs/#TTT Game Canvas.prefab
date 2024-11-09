@@ -1124,6 +1124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonGroup: {fileID: 3412501313697934134}
+  cancelButton: {fileID: 1556321059153044302}
   endGroup: {fileID: 1262734111471533865}
   endText: {fileID: 2777250842622740275}
 --- !u!1 &4461967870293315692

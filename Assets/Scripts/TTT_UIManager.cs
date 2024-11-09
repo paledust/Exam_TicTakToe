@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TTT_UIManager : MonoBehaviour
 {
 [Header("Main Menu")]
     [SerializeField] private CanvasGroup buttonGroup;
+    [SerializeField] private Button cancelButton;
 [Header("End Screen")]
     [SerializeField] private CanvasGroup endGroup;
     [SerializeField] private TextMeshProUGUI endText;
@@ -14,11 +16,15 @@ public class TTT_UIManager : MonoBehaviour
         EventHandler.E_AfterLoadScene += AfterLoadSceneHandler;
         EventHandler.E_BeforeUnloadScene += BeforeLoadSceneHandler;
         EventHandler.E_OnTTTGameEnd += TTT_GameEndHandler;
+        EventHandler.E_OnAITurn += AITurnHandler;
+        EventHandler.E_OnStepChange += StepChangeHandler;
     }
     void OnDestroy(){
         EventHandler.E_AfterLoadScene -= AfterLoadSceneHandler;
         EventHandler.E_BeforeUnloadScene -= BeforeLoadSceneHandler;
         EventHandler.E_OnTTTGameEnd -= TTT_GameEndHandler;
+        EventHandler.E_OnAITurn -= AITurnHandler;
+        EventHandler.E_OnStepChange -= StepChangeHandler;
     }
     public void BEvent_Restart(){
         GameManager.Instance.RestartLevel();
@@ -27,6 +33,7 @@ public class TTT_UIManager : MonoBehaviour
         GameManager.Instance.SwitchingScene("Menu");
     }
     public void BEvent_Cancel(){
+        EventHandler.Call_OnCancelStep();
     }
 #region EventHandler
     void BeforeLoadSceneHandler(){
@@ -57,6 +64,15 @@ public class TTT_UIManager : MonoBehaviour
                 endText.text = $"平局";
                 break;
         }
+    }
+    void AITurnHandler(bool isTurnBegin){
+        cancelButton.interactable = !isTurnBegin;
+    }
+    void StepChangeHandler(int stepCount){
+        if(stepCount <= 1 && cancelButton.interactable)
+            cancelButton.interactable = false;
+        if(stepCount > 1 && !cancelButton.interactable)
+            cancelButton.interactable = true;
     }
 #endregion
     IEnumerator coroutineFadeCanvasGroup(CanvasGroup targetGroup, float targetAlpha, float duration, bool turnOnInteractive){

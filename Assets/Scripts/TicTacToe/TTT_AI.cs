@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TTT_AI : TTT_Pawn
 {
-    public override void BeginPlay(TicTacToeManager ttt_manager)
+    public async override void BeginPlay(TicTacToeManager ttt_manager)
     {
+        EventHandler.Call_OnAITurn(true);
+        await Task.Delay(500);
     //计算接下来要走哪一步
         char[] tempLayout = new char[9];
         System.Array.Copy(ttt_manager.m_layoutInfo, tempLayout, 9);
@@ -37,5 +40,10 @@ public class TTT_AI : TTT_Pawn
         }
 
         EventHandler.Call_OnSelectGrid(Geometry.GridFromIndex(availableSlot[Random.Range(0, availableSlot.Length)]));
+    }
+    public override void FinishPlay(TicTacToeManager ttt_manager)
+    {
+        base.FinishPlay(ttt_manager);
+        EventHandler.Call_OnAITurn(false);
     }
 }

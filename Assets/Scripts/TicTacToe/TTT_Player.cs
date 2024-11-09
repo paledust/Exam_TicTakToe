@@ -40,10 +40,10 @@ public class TTT_Player : TTT_Pawn
             selectedGrid = new Vector2Int(-1, -1);
         }
     }
-    public void AssignBoard(Transform board)=>boardTransform = board;
     public override void BeginPlay(TicTacToeManager ttt_manager){
         this.enabled = true;
         playerInput.enabled = true;
+        boardTransform = ttt_manager.m_boardTrans;
     }
     public override void FinishPlay(TicTacToeManager ttt_manager){
         this.enabled = false;
