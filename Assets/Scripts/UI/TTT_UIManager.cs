@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleAudioSystem;
@@ -7,12 +8,15 @@ using UnityEngine.UI;
 
 public class TTT_UIManager : MonoBehaviour
 {
+    [SerializeField] private GraphicRaycaster graphicRaycaster; 
 [Header("Main Menu")]
     [SerializeField] private CanvasGroup buttonGroup;
     [SerializeField] private Button cancelButton;
 [Header("End Screen")]
     [SerializeField] private CanvasGroup endGroup;
     [SerializeField] private TextMeshProUGUI endText;
+[Header("Intro")]
+    [SerializeField] private CanvasGroup introGroup;
 [Header("Audio")]
     [SerializeField] private AudioSource ui_audio;
     [SerializeField] private string ui_clip;
@@ -20,19 +24,22 @@ public class TTT_UIManager : MonoBehaviour
         EventHandler.E_OnTTTGameEnd += TTT_GameEndHandler;
         EventHandler.E_OnAITurn += AITurnHandler;
         EventHandler.E_OnStepChange += StepChangeHandler;
+        EventHandler.E_OnTTTGameIntro += TTT_IntroHandler;
     }
     void OnDestroy(){
         EventHandler.E_OnTTTGameEnd -= TTT_GameEndHandler;
         EventHandler.E_OnAITurn -= AITurnHandler;
         EventHandler.E_OnStepChange -= StepChangeHandler;
+        EventHandler.E_OnTTTGameIntro -= TTT_IntroHandler;
     }
-
 #region Button Event
     public void BEvent_Restart(){
+        graphicRaycaster.enabled = false;
         AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         GameManager.Instance.RestartLevel();
     }
     public void BEvent_BackToMenu(){
+        graphicRaycaster.enabled = false;
         AudioManager.Instance.PlaySoundEffect(ui_audio, ui_clip, 1);
         GameManager.Instance.SwitchingScene("Menu");
     }
@@ -43,6 +50,9 @@ public class TTT_UIManager : MonoBehaviour
 #endregion
 
 #region EventHandler
+    void TTT_IntroHandler(){
+        StartCoroutine(coroutinePlayIntro());
+    }
     void TTT_GameEndHandler(TicTacToeManager.END_GAME_CONDITION endgame_condition){
         buttonGroup.interactable = false;
         buttonGroup.alpha = 0;
@@ -77,5 +87,17 @@ public class TTT_UIManager : MonoBehaviour
             targetGroup.alpha = Mathf.Lerp(initAlpha, targetAlpha, EasingFunc.Easing.SmoothInOut(t));
         });
         targetGroup.interactable = turnOnInteractive;
+    }
+    IEnumerator coroutinePlayIntro(){
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForLoop(0.25f, (t)=>{
+            introGroup.alpha = Mathf.Lerp(0, 1, EasingFunc.Easing.SmoothInOut(t));
+        });
+        yield return new WaitForSeconds(1f);
+        yield return new WaitForLoop(0.25f, (t)=>{
+            introGroup.alpha = Mathf.Lerp(1, 0, EasingFunc.Easing.SmoothInOut(t));
+        });
+
+        EventHandler.Call_OnGameIntroComplete();
     }
 }

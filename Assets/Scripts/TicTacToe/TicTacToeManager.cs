@@ -68,6 +68,7 @@ public class TicTacToeManager : MonoBehaviour
     void Awake(){
         EventHandler.E_OnSelectGrid += SelectGridHandler;
         EventHandler.E_OnCancelStep += CancelStepHandler;
+        EventHandler.E_OnGameIntroComplete += IntroCompleteHandler;
 
         stackMoves = new Stack<Vector2Int>();
         backgroundChanger = new CoroutineExcuter(this);
@@ -95,13 +96,17 @@ public class TicTacToeManager : MonoBehaviour
     void OnDestroy(){
         EventHandler.E_OnSelectGrid -= SelectGridHandler;
         EventHandler.E_OnCancelStep -= CancelStepHandler;
+        EventHandler.E_OnGameIntroComplete -= IntroCompleteHandler;
     }
     void Start(){
         EventHandler.Call_OnStepChange(stackMoves.Count);
-        currentPlayer.BeginPlay(this);
-        backgroundChanger.Excute(CommonCoroutine.coroutineFadeSpriteColor(backgroundSprite, crossColor, 0.25f));
+        EventHandler.Call_OnTTTGameIntro();
     }
 #region Event Handler
+    void IntroCompleteHandler(){
+        currentPlayer.BeginPlay(this);
+        backgroundChanger.Excute(CommonCoroutine.coroutineFadeSpriteColor(backgroundSprite, crossColor, 0.25f));        
+    }
     void CancelStepHandler(){
         var move = stackMoves.Pop();
         RemovePiece(move);

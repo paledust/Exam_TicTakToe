@@ -26,6 +26,10 @@ public static class EventHandler
     public static void Call_OnCancelStep()=>E_OnCancelStep?.Invoke();
     public static event Action<Vector2Int> E_OnSelectGrid;
     public static void Call_OnSelectGrid(Vector2Int gridPoint)=>E_OnSelectGrid?.Invoke(gridPoint);
+    public static event Action E_OnTTTGameIntro;
+    public static void Call_OnTTTGameIntro()=>E_OnTTTGameIntro?.Invoke();
+    public static event Action E_OnGameIntroComplete;
+    public static void Call_OnGameIntroComplete()=>E_OnGameIntroComplete?.Invoke();
     public static event Action<TicTacToeManager.END_GAME_CONDITION> E_OnTTTGameEnd;
     public static void Call_OnTTTGameEnd(TicTacToeManager.END_GAME_CONDITION endCondition)=>E_OnTTTGameEnd?.Invoke(endCondition);
 #endregion
